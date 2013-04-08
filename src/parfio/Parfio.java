@@ -43,6 +43,7 @@ public class Parfio {
 		String line = stdin.readLine();
 
 		if (line == null && in_file.size() > 0) {
+			stdin.close();
 			stdin = new BufferedReader(new FileReader(in_file.remove(0)));
 			return readLine();
 		}
