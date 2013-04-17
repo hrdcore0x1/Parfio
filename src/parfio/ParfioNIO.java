@@ -9,13 +9,13 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class ParfioNIO {
-	private static ArrayList<File> in_file;
-	private static RandomAccessFile stdin;
-
+	private static  ArrayList<File> in_file;
+	public static ParfioReaderNIO3 stdin;
+/*
 	static {
 		loadProperties("config.Properties");
 	}
-
+*/
 	public static void loadProperties(String config) {
 		try {
 			Properties prop = new Properties();
@@ -27,25 +27,17 @@ public class ParfioNIO {
 				in_file.add(new File(file_scanner.next()));
 
 			file_scanner.close();
-			stdin = new RandomAccessFile(in_file.remove(0), "r");
+			stdin = new ParfioReaderNIO3(in_file.remove(0).toString());
 		} catch (IOException e) {
 			// do nothing for now, throws error when config file doesn't exist
 			// or file not found from config.Properties
 		}
 	}
 
-	public static void close() throws IOException {
-		stdin.close();
+	
+	protected static synchronized File popFile(){
+		if (in_file.size() == 0) return null;
+		return in_file.remove(0);
 	}
 
-	public static synchronized String readLine() throws IOException {
-		String line = stdin.readLine();
-		if (line == null && in_file.size() > 0) {
-			stdin.close();
-			stdin = new RandomAccessFile(in_file.remove(0), "r");
-			return readLine();
-		}
-
-		return line;
-	}
 }

@@ -11,31 +11,32 @@ import parfio.Parfio;
 public class TestOMP {
 
 	public static void main(String[] args) throws IOException {
-		final long N = 1000000L;
+		final long N = 100000; // 1000000L;
 		final long expected = (N * (N + 1) / 2);
 		final int THREADS = 4;
-		
+
 		/* Write */
 		createFile(N);
-		
+
 		/* Specify nondefault config file to load */
 		Parfio.loadProperties("single_file.Properties");
-		
+
 		/* Read w/JOMP */
 		long start = System.currentTimeMillis();
 		lc_omp.work(new SumWork(), 1, THREADS);
 		long end = System.currentTimeMillis();
-		
+
 		/* Results */
 		boolean pass = (SumWork.sum == expected);
 		System.out.println("JOMP: Pass = " + pass);
 		System.out.println("Total time: " + (end - start) + " ms");
-		
+
 		/* Clean & exit */
 		lc_omp.finish();
 		Parfio.close();
 
 	}
+
 	public static void createFile(long N) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new FileWriter("testnums.txt"));
 		for (int i = 0; i <= N; i++) {
@@ -44,6 +45,7 @@ public class TestOMP {
 		bw.close();
 	}
 }
+
 class SumWork implements IWork {
 	public static long sum = 0;
 
@@ -53,7 +55,7 @@ class SumWork implements IWork {
 		long mySum = 0;
 		for (;;) {
 			try {
-				line = Parfio.readLine();
+				line = Parfio.stdin.readLine();
 			} catch (Exception ex) {
 			}
 			if (line == null)

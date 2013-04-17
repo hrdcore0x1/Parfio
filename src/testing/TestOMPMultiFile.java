@@ -14,7 +14,7 @@ public class TestOMPMultiFile {
 	public static void main(String[] args) throws IOException {
 		final long N = 1000000L;
 		final long expected = (N * (N + 1) / 2);
-		final int THREADS = 4;  //2, 4, 10
+		final int THREADS = 2;  //2, 4, 10
 		
 		
 		/* Write */
@@ -32,7 +32,6 @@ public class TestOMPMultiFile {
 		boolean pass = (SumWork2.sum == expected);
 		System.out.println("JOMP: Pass = " + pass);
 		System.out.println("Total time: " + (end - start) + " ms");
-		
 		/* Clean & exit */
 		lc_omp.finish();
 		Parfio.close();
@@ -61,18 +60,19 @@ public class TestOMPMultiFile {
 }
 class SumWork2 implements IWork {
 	public static long sum = 0;
+	
 	@Override
 	public boolean evaluate(Work w) {
 		String line = null;
 		long mySum = 0;
 		for (;;) {
 			try {
-				line = Parfio.readLine();
+				line = Parfio.stdin.readLine();
+				mySum += Integer.parseInt(line);
 			} catch (Exception ex) {
 			}
 			if (line == null)
 				break;
-			mySum += Integer.parseInt(line);
 		}
 		synchronized(this){
 			sum += mySum;
