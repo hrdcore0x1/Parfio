@@ -1,6 +1,5 @@
-package testing;
+package old;
 
-import parfio.ParfioReaderNIO2;
 
 public class TestParfioReaderNIO2 {
 

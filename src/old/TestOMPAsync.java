@@ -1,17 +1,17 @@
-package testing;
+package old;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import omp.lc_omp;
 import omp.lc_omp.IWork;
 import omp.lc_omp.Work;
-import parfio.Parfio;
 
-public class TestOMP {
+public class TestOMPAsync {
 
 	public static void main(String[] args) throws IOException {
-		final long N = 100; // 1000000L;
+		final long N = 100000; // 1000000L;
 		final long expected = (N * (N + 1) / 2);
 		final int THREADS = 4;
 
@@ -19,21 +19,20 @@ public class TestOMP {
 		createFile(N);
 
 		/* Specify nondefault config file to load */
-		Parfio.loadProperties("single_file.Properties");
+		ParfioNIO.loadProperties("single_file.Properties");
 
 		/* Read w/JOMP */
 		long start = System.currentTimeMillis();
-		lc_omp.work(new SumWork(), 1, THREADS);
+		lc_omp.work(new SumWork3(), 1, THREADS);
 		long end = System.currentTimeMillis();
 
 		/* Results */
-		boolean pass = (SumWork.sum == expected);
+		boolean pass = (SumWork3.sum == expected);
 		System.out.println("JOMP: Pass = " + pass);
 		System.out.println("Total time: " + (end - start) + " ms");
 
 		/* Clean & exit */
 		lc_omp.finish();
-		Parfio.close();
 
 	}
 
@@ -46,7 +45,7 @@ public class TestOMP {
 	}
 }
 
-class SumWork implements IWork {
+class SumWork3 implements IWork {
 	public static long sum = 0;
 
 	@Override
@@ -55,13 +54,13 @@ class SumWork implements IWork {
 		long mySum = 0;
 		for (;;) {
 			try {
-				line = Parfio.stdin.readLine();
-				System.out.println("LINE=" + line);
+				line = ParfioNIO.stdin.readLine();
+				if (line == null || line.trim() == "")
+					break;
+				mySum += Integer.parseInt(line);
 			} catch (Exception ex) {
 			}
-			if (line == null)
-				break;
-			mySum += Integer.parseInt(line);
+
 		}
 		synchronized (this) {
 			sum += mySum;
