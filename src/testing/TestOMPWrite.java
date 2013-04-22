@@ -11,18 +11,22 @@ import parfio.Parfio;
 public class TestOMPWrite {
 
 	public static void main(String[] args) throws IOException {
-		final long N = 100000; // 1000000L;
+		final long N = 1000000L; // 1000000L;
 		final long expected = (N * (N + 1) / 2);
 		final int THREADS = 4;
  
+		long start = System.currentTimeMillis();
 		Parfio.loadProperties("config.Properties");
 		lc_omp.work(new WriteWork(), 0, (int)N, 1, 1, THREADS);
 		Parfio.stdout.close();
-
+		long end = System.currentTimeMillis();
+		
 		lc_omp.work(new ReadWork(), 2, 4);
 		Parfio.stdin.close();
 		
-		System.out.println("Sum = " + ReadWork.sum);
+		boolean pass = (ReadWork.sum == expected);
+		System.out.println("JOMP: Pass = " + pass);
+		System.out.println("Total time (Writing): " + (end - start) + " ms");
 		lc_omp.finish();
 		
 	}

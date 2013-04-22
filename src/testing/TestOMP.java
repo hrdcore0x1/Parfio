@@ -11,7 +11,7 @@ import parfio.Parfio;
 public class TestOMP {
 
 	public static void main(String[] args) throws IOException {
-		final long N = 100; // 1000000L;
+		final long N = 1000000L; // 1000000L;
 		final long expected = (N * (N + 1) / 2);
 		final int THREADS = 4;
 
@@ -33,7 +33,7 @@ public class TestOMP {
 
 		/* Clean & exit */
 		lc_omp.finish();
-		Parfio.close();
+		Parfio.stdin.close();
 
 	}
 
@@ -56,7 +56,6 @@ class SumWork implements IWork {
 		for (;;) {
 			try {
 				line = Parfio.stdin.readLine();
-				System.out.println("LINE=" + line);
 			} catch (Exception ex) {
 			}
 			if (line == null)

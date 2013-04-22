@@ -14,7 +14,7 @@ public class TestOMPMultiFile {
 	public static void main(String[] args) throws IOException {
 		final long N = 1000000L;
 		final long expected = (N * (N + 1) / 2);
-		final int THREADS = 2;  //2, 4, 10
+		final int THREADS = 4;  //2, 4, 10
 		
 		
 		/* Write */
@@ -34,7 +34,7 @@ public class TestOMPMultiFile {
 		System.out.println("Total time: " + (end - start) + " ms");
 		/* Clean & exit */
 		lc_omp.finish();
-		Parfio.close();
+		Parfio.stdin.close();
 
 	}
 	public static void createFile(long N) throws IOException {

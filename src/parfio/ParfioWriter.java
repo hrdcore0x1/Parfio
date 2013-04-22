@@ -13,6 +13,4 @@ public class ParfioWriter extends BufferedWriter {
 		super(out, sz);
 	}
 
-	
-
 }
