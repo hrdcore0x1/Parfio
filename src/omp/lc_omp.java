@@ -275,6 +275,14 @@ public final class lc_omp {
 		}
 		return c;
 	}
+	
+	
+	public static final int omp_get_taskid(){
+		Thread t=Thread.currentThread();
+		if (t instanceof Worker) return ((Worker)t).w.task;
+		return -1;
+	}
+	
 	public static final double omp_get_wtime() {
 		return (double)(System.nanoTime()-start)/1.0e9;
 	}

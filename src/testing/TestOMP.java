@@ -33,8 +33,6 @@ public class TestOMP {
 
 		/* Clean & exit */
 		lc_omp.finish();
-		Parfio.stdin.close();
-
 	}
 
 	public static void createFile(long N) throws IOException {
