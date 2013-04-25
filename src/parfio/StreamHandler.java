@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 
 public class StreamHandler {
-	public ArrayList<Reader> in_file = new ArrayList<Reader>();
-	public ParfioReader stdin;
-	public ParfioWriter stdout;
+	protected ArrayList<Reader> in_file = new ArrayList<Reader>();
+	protected ParfioReader stdin;
+	protected ParfioWriter stdout;
 	private boolean first = true;
 	
 	
