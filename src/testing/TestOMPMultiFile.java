@@ -33,8 +33,9 @@ public class TestOMPMultiFile {
 		System.out.println("JOMP: Pass = " + pass);
 		System.out.println("Total time: " + (end - start) + " ms");
 		/* Clean & exit */
+		Parfio.close();
 		lc_omp.finish();
-		Parfio.stdin.close();
+		
 
 	}
 	public static void createFile(long N) throws IOException {
@@ -67,7 +68,7 @@ class SumWork2 implements IWork {
 		long mySum = 0;
 		for (;;) {
 			try {
-				line = Parfio.stdin.readLine();
+				line = Parfio.readLine();
 				mySum += Integer.parseInt(line);
 			} catch (Exception ex) {
 			}

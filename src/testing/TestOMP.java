@@ -53,7 +53,7 @@ class SumWork implements IWork {
 		long mySum = 0;
 		for (;;) {
 			try {
-				line = Parfio.stdin.readLine();
+				line = Parfio.readLine();
 			} catch (Exception ex) {
 			}
 			if (line == null)

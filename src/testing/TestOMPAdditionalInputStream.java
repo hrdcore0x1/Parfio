@@ -34,7 +34,7 @@ public class TestOMPAdditionalInputStream {
 		/* Read w/JOMP */
 		long start = System.currentTimeMillis();
 		lc_omp.work(new SumWork4(), 1, THREADS);
-		Parfio.open(new FileInputStream("testadd.txt"));  //add new file to list of input streams
+		Parfio.open(new FileInputStream("testadd.txt"), 1);  //add new file to list of input streams
 		lc_omp.work(new SumWork4(), 1, THREADS);
 		long end = System.currentTimeMillis();
 
@@ -44,8 +44,9 @@ public class TestOMPAdditionalInputStream {
 		System.out.println("Total time: " + (end - start) + " ms");
 
 		/* Clean & exit */
+		Parfio.close();
 		lc_omp.finish();
-		Parfio.stdin.close();
+		
 
 	}
 
@@ -67,7 +68,7 @@ class SumWork4 implements IWork {
 		long mySum = 0;
 		for (;;) {
 			try {
-				line = Parfio.stdin.readLine();
+				line = Parfio.readLine();
 			} catch (Exception ex) {
 			}
 			if (line == null)

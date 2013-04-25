@@ -16,17 +16,16 @@ public class TestOMPWrite {
 		final int THREADS = 4;
  
 		long start = System.currentTimeMillis();
-		Parfio.loadProperties("config.Properties");
+		Parfio.loadProperties("write.Properties");
 		lc_omp.work(new WriteWork(), 0, (int)N, 1, 1, THREADS);
-		Parfio.stdout.close();
 		long end = System.currentTimeMillis();
 		
-		lc_omp.work(new ReadWork(), 2, 4);
-		Parfio.stdin.close();
+		lc_omp.work(new ReadWork(), 1, 4);
 		
 		boolean pass = (ReadWork.sum == expected);
 		System.out.println("JOMP: Pass = " + pass);
 		System.out.println("Total time (Writing): " + (end - start) + " ms");
+		Parfio.close();
 		lc_omp.finish();
 		
 	}
@@ -39,7 +38,7 @@ class WriteWork implements lc_omp.IWork{
 	public boolean evaluate(Work w) {
 		for(int i=w.start; i<=w.end; i++){
 			try{
-			Parfio.stdout.write(i + "\r\n");
+			Parfio.write(i + "\r\n");
 			}catch(Exception e){
 				System.out.println(e);
 				break;
@@ -59,7 +58,7 @@ class ReadWork implements IWork {
 		long mySum = 0;
 		for (;;) {
 			try {
-				line = Parfio.stdin.readLine();
+				line = Parfio.readLine();
 			} catch (Exception ex) {
 			}
 			if (line == null)

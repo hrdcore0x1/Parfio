@@ -3,6 +3,7 @@ package omp;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public final class lc_omp {
 	public static interface IWork {
@@ -53,12 +54,16 @@ public final class lc_omp {
 			int i=0; long j=0;
 			for (;;) {
 				try {
-					w = q.take();//poll(1, TimeUnit.SECONDS);
+					w = q.poll(1, TimeUnit.SECONDS); //q.take();
+				
 				} catch (InterruptedException e) {
 					//e.printStackTrace();
 					//System.out.println(this.getName()+" interrupted");
 					break;
 				}
+				
+			
+				
 				if (w!=null) {
 					//System.out.println(this.getName()+" got task="+w.task);
 					long k=System.nanoTime();
