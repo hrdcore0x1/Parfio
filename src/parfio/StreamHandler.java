@@ -3,6 +3,8 @@ package parfio;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -36,6 +38,9 @@ public class StreamHandler {
 		stdout = new ParfioWriter(w);
 	}
 	
+	public void openW(OutputStream os){
+		openW(new OutputStreamWriter(os));
+	}
 	public void nextR(){
 		try {
 			stdin.close();

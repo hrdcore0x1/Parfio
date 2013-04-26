@@ -7,20 +7,20 @@ import parfio.*;
 import omp.lc_omp;
 import omp.lc_omp.*;
 
-public class TestPipe {
+public class TestOMPPipe {
 
 	public static void main(String[] args) throws FileNotFoundException,
 			IOException {
-		final long N = 10; // 1000000L;
+		final long N = 1000000L; // 1000000L;
 		final long expected = (N * (N + 1) / 2);
 		Parfio.loadProperties("pipe.Properties");
-		System.out.println("Writing to pipe...");
+		long start = System.currentTimeMillis();
 		lc_omp.work(new PipeWrite(), 0, (int)N, 2);
-		System.out.println("Reading from pipe...");
-
 		lc_omp.work(new PipeRead(), 1);
+		long end = System.currentTimeMillis();
 		boolean pass = (PipeRead.sum == expected);
-		System.out.println("Pass: " + pass);
+		System.out.println("OMP Pipe: Pass = " + pass);
+		System.out.println("Time: " + (end - start) + " ms");
 		if (!pass) System.out.println("Sum: " + PipeRead.sum + ", Expected: " + expected);
 		Parfio.close();
 		lc_omp.finish();
@@ -51,21 +51,16 @@ class PipeRead implements IWork {
 	
 	@Override
 	public boolean evaluate(Work w) {
-		//System.out.println("Hello from " + lc_omp.omp_get_thread_num());
-		int mySum = 0;
+		long mySum = 0;
 		try {
 			for(;Parfio.ready();){
 			String line = Parfio.readLine();
 			if (line == null) break;
 			mySum += Integer.parseInt(line);
-			//System.out.println(line);
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
+		} catch (IOException ignore) {
 		} 
 		sum += mySum;
-		//System.out.println("Goodbye from " + lc_omp.omp_get_thread_num());
 		return true;
 	}
 

@@ -81,7 +81,7 @@ public class Parfio {
 				tGroupIn = Integer.parseInt(input.substring(0, idx));
 				tGroupOut = Integer.parseInt(input.substring(idx + 1));
 
-				PipedReader pr = new PipedReader(10240);
+				PipedReader pr = new PipedReader(1000000 * Byte.SIZE);
 				PipedWriter pw = new PipedWriter(pr);
 
 				StreamHandler pIn = (hm.containsKey(tGroupIn)) ? hm

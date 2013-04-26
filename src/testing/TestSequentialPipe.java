@@ -5,21 +5,30 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PipedReader;
+import java.io.PipedWriter;
 
-public class TestSequential {
+public class TestSequentialPipe {
 
 	public static void main(String[] args) throws IOException {
 		final long N = 1000000L;
 		final long expected = (N * (N + 1) / 2);
 
-		/* Write */
-		createFile(N);
-
+		PipedReader pr = new PipedReader((int)N * Byte.SIZE);
+		PipedWriter pw = new PipedWriter(pr);
 		long start = System.currentTimeMillis();
+		/* Write */
+		for(int i=0; i<=N; i++){
+			pw.write(i + "\n");
+		}
+		
+		
+
+		
 		/* Read sequential */
-		BufferedReader br = new BufferedReader(new FileReader("testnums.txt"));
 		long sum = 0;
-		for (;;) {
+		BufferedReader br = new BufferedReader(pr);
+		for (;br.ready();) {
 			String line = null;
 			try {
 				line = br.readLine();
@@ -30,20 +39,14 @@ public class TestSequential {
 			sum += Integer.parseInt(line);
 		}
 		br.close();
+		pw.close();
 		long end = System.currentTimeMillis();
 		boolean pass = (sum == expected);
-		System.out.println("Sequential Pipe: Pass = " + pass);
+		System.out.println("Sequential: Pass = " + pass);
 		System.out.println("Total time: " + (end - start) + " ms");
 		System.exit(0);
 	}
 
-	public static void createFile(long N) throws IOException {
-		BufferedWriter bw = new BufferedWriter(new FileWriter("testnums.txt"));
-		for (int i = 0; i <= N; i++) {
-			bw.write(i + "\n");
-		}
-		bw.close();
-	}
 }
 
 

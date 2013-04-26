@@ -97,7 +97,7 @@ public final class lc_omp {
 						break;
 				} // else System.out.println(this.getName()+" woke up");
 			}
-			System.out.println(this.getName() + " " + i + " " + j);
+			//System.out.println(this.getName() + " " + i + " " + j);
 		}
 	}
 
