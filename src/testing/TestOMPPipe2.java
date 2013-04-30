@@ -60,7 +60,7 @@ class PipeRead2 implements IWork {
 
 	@Override
 	public boolean evaluate(Work w) {
-		long mySum = 0;
+		long mySum = 0, i=0;
 		try {
 			
 			for (; Parfio.ready();) {
@@ -70,8 +70,10 @@ class PipeRead2 implements IWork {
 					break;
 			
 				if (lc_omp.omp_get_taskid() == 1) {
-					System.out.println("#1 " + line);
 					Parfio.write(line + "\n");
+					//if (++i%20 == 0) System.out.println(line);
+				}else{
+					//if (++i%20 == 0) System.out.println(line);
 				}
 				
 				

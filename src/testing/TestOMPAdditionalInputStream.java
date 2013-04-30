@@ -22,10 +22,7 @@ public class TestOMPAdditionalInputStream {
 		/* Write */
 		createFile(N, "testnums.txt");
 		createFile(n, "testadd.txt");
-		
-		
-		
-		
+
 
 		/* Specify nondefault config file to load */
 		Parfio.loadProperties("single_file.Properties");
@@ -34,7 +31,8 @@ public class TestOMPAdditionalInputStream {
 		/* Read w/JOMP */
 		long start = System.currentTimeMillis();
 		lc_omp.work(new SumWork4(), 1, THREADS);
-		Parfio.open(new FileInputStream("testadd.txt"), 1);  //add new file to list of input streams
+		//add new file to list of input streams for thread group 1
+		Parfio.open(new FileInputStream("testadd.txt"), 1);  
 		lc_omp.work(new SumWork4(), 1, THREADS);
 		long end = System.currentTimeMillis();
 

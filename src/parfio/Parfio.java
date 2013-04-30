@@ -92,7 +92,7 @@ public class Parfio {
 				pIn.openR(pr);
 				pOut.openW(pw);
 
-				System.out.printf("In %d : Out %d\n", tGroupIn, tGroupOut);
+			
 				if (!hm.containsKey(tGroupIn))
 					hm.put((Integer) tGroupIn, pIn);
 				if (!hm.containsKey(tGroupOut))
@@ -111,6 +111,7 @@ public class Parfio {
 	}
 
 	public static synchronized String readLine() throws IOException {
+		if (!ready()) return null;
 		int tGroup = lc_omp.omp_get_taskid();
 		return (hm.containsKey(tGroup)) ? hm.get(tGroup).stdin.readLine()
 				: null;
