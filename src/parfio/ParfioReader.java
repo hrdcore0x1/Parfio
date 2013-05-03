@@ -13,7 +13,7 @@ public class ParfioReader extends BufferedReader {
 		this.p = p;
 	}
 	
-	public synchronized String readLine() throws IOException{
+	public String readLine() throws IOException{
 		String line = super.readLine();
 		
 		/* check if more files exists when line=null, if so open next file */

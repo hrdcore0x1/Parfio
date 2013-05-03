@@ -102,7 +102,7 @@ public class Parfio {
 		}
 	}
 
-	public static synchronized boolean write(String s) throws IOException {
+	public static boolean write(String s) throws IOException {
 		int tGroup = lc_omp.omp_get_taskid();
 		if (!hm.containsKey(tGroup))
 			return false;
@@ -110,7 +110,7 @@ public class Parfio {
 		return true;
 	}
 
-	public static synchronized String readLine() throws IOException {
+	public static String readLine() throws IOException {
 		if (!ready()) return null;
 		int tGroup = lc_omp.omp_get_taskid();
 		return (hm.containsKey(tGroup)) ? hm.get(tGroup).stdin.readLine()
